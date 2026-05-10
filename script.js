@@ -4,6 +4,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  renderSiteContent();
   initNavbar();
   initBackgroundFade();
   initScrollReveal();
@@ -12,29 +13,220 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
 });
 
+
+/* ──────────────────────────────────────────────────────────
+   0. CONTENT RENDERING — centralized media and component data
+   ────────────────────────────────────────────────────────── */
+function renderSiteContent() {
+  const content = window.AIRO_CONTENT || {};
+  renderConfiguredMedia(content.media || {}, content.assetBasePath || '');
+  renderHeroStats(content.heroStats || []);
+  renderPowerNote(content.powerDisclaimer || '');
+  renderComponents(content.components || []);
+}
+
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;'
+  }[char]));
+}
+
+function renderConfiguredMedia(media, assetBasePath = '') {
+  const fallback = media.fallback;
+
+  function resolveAssetPath(src = '') {
+    if (!src || /^(https?:|data:|blob:|\/)/.test(src)) return src;
+    const cleanBase = assetBasePath.replace(/\/$/, '');
+    const cleanSrc = src.replace(/^\.\//, '');
+    return cleanBase ? `${cleanBase}/${cleanSrc}` : cleanSrc;
+  }
+
+  const applyImage = (img, item) => {
+    if (!img || !item?.src) return;
+
+    img.classList.remove('media-loaded', 'media-failed');
+    img.alt = item.alt || '';
+    img.loading = item.loading || 'lazy';
+    img.decoding = item.decoding || 'async';
+
+    img.onload = () => {
+      img.classList.add('media-loaded');
+      img.classList.remove('media-failed');
+    };
+
+    img.onerror = () => {
+      img.classList.add('media-failed');
+      img.classList.remove('media-loaded');
+
+      if (fallback?.src && img.dataset.fallbackApplied !== 'true') {
+        img.dataset.fallbackApplied = 'true';
+        img.src = resolveAssetPath(fallback.src);
+      }
+    };
+
+    img.src = resolveAssetPath(item.src);
+  };
+
+  document.querySelectorAll('[data-media-figure]').forEach((figure) => {
+    const key = figure.dataset.mediaFigure;
+    const item = media[key];
+    if (!item || !item.src || item.enabled === false) return;
+
+    const caption = item.creditUrl
+      ? `${escapeHTML(item.caption)} · <a href="${escapeHTML(item.creditUrl)}" target="_blank" rel="noopener">${escapeHTML(item.creditText || 'Source')}</a>`
+      : escapeHTML(item.caption || '');
+
+    figure.innerHTML = `
+      <img>
+      ${caption ? `<figcaption class="problem-img-label">${caption}</figcaption>` : ''}
+    `;
+    applyImage(figure.querySelector('img'), item);
+  });
+
+  document.querySelectorAll('img[data-media-img]').forEach((img) => {
+    const item = media[img.dataset.mediaImg];
+    if (item && item.src && item.enabled !== false) applyImage(img, item);
+  });
+
+  document.querySelectorAll('[data-media-bg]').forEach((el) => {
+    const item = media[el.dataset.mediaBg];
+    if (item && item.src && item.enabled !== false) {
+      el.style.backgroundImage = `url("${resolveAssetPath(item.src)}")`;
+    }
+  });
+}
+
+function renderHeroStats(stats) {
+  const target = document.querySelector('[data-hero-stats]');
+  if (!target || !stats.length) return;
+
+  target.innerHTML = stats.map((stat) => {
+    const suffix = stat.suffix ? `<sup>${escapeHTML(stat.suffix)}</sup>` : '';
+    return `
+      <div class="hero-stat">
+        <div class="num">${escapeHTML(stat.value)}${suffix}</div>
+        <div class="lbl">${escapeHTML(stat.label)}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderPowerNote(note) {
+  document.querySelectorAll('[data-power-note]').forEach((el) => {
+    el.textContent = note;
+    el.hidden = !note;
+  });
+}
+
+const componentIcons = {
+  solar: `
+    <rect x="6" y="14" width="36" height="22" rx="3" stroke="currentColor" stroke-width="1.4"/>
+    <line x1="16" y1="14" x2="16" y2="36" stroke="currentColor" stroke-width="0.9" opacity="0.45"/>
+    <line x1="26" y1="14" x2="26" y2="36" stroke="currentColor" stroke-width="0.9" opacity="0.45"/>
+    <line x1="36" y1="14" x2="36" y2="36" stroke="currentColor" stroke-width="0.9" opacity="0.45"/>
+    <line x1="6" y1="25" x2="42" y2="25" stroke="currentColor" stroke-width="0.9" opacity="0.45"/>
+    <line x1="12" y1="8" x2="16" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="24" y1="6" x2="24" y2="12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="36" y1="8" x2="32" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    <circle cx="24" cy="42" r="2" fill="currentColor"/>
+  `,
+  hepa: `
+    <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="1.4"/>
+    <circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="0.9" opacity="0.5"/>
+    <circle cx="24" cy="24" r="4" fill="currentColor" opacity="0.22"/>
+    <circle cx="24" cy="24" r="1.5" fill="currentColor"/>
+    <line x1="24" y1="8" x2="24" y2="14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="24" y1="34" x2="24" y2="40" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="8" y1="24" x2="14" y2="24" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="34" y1="24" x2="40" y2="24" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+  `,
+  battery: `
+    <rect x="8" y="18" width="32" height="14" rx="3" stroke="currentColor" stroke-width="1.4"/>
+    <rect x="40" y="21" width="4" height="8" rx="1" fill="currentColor" opacity="0.45"/>
+    <rect x="12" y="20" width="7" height="10" rx="1" fill="currentColor" opacity="0.75"/>
+    <rect x="21" y="20" width="7" height="10" rx="1" fill="currentColor" opacity="0.5"/>
+    <rect x="30" y="20" width="3" height="10" rx="1" fill="currentColor" opacity="0.22"/>
+  `,
+  sensor: `
+    <rect x="12" y="12" width="24" height="24" rx="4" stroke="currentColor" stroke-width="1.4"/>
+    <circle cx="24" cy="24" r="4" fill="currentColor" opacity="0.25"/>
+    <circle cx="24" cy="24" r="1.5" fill="currentColor"/>
+    <path d="M19 19 A7 7 0 0 1 29 19" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    <path d="M15 15 A13 13 0 0 1 33 15" stroke="currentColor" stroke-width="0.9" fill="none" stroke-linecap="round" opacity="0.4"/>
+  `,
+  housing: `
+    <rect x="14" y="8" width="20" height="34" rx="6" stroke="currentColor" stroke-width="1.4"/>
+    <line x1="14" y1="18" x2="34" y2="18" stroke="currentColor" stroke-width="0.9" opacity="0.4"/>
+    <line x1="14" y1="32" x2="34" y2="32" stroke="currentColor" stroke-width="0.9" opacity="0.4"/>
+    <circle cx="24" cy="38" r="2" fill="currentColor" opacity="0.55"/>
+    <line x1="19" y1="12" x2="29" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  `,
+  carbon: `
+    <path d="M24 6 L42 17 L42 31 L24 42 L6 31 L6 17 Z" stroke="currentColor" stroke-width="1.4" fill="none"/>
+    <path d="M24 14 L36 21 L36 27 L24 34 L12 27 L12 21 Z" stroke="currentColor" stroke-width="0.9" opacity="0.45" fill="none"/>
+    <circle cx="24" cy="24" r="4" fill="currentColor" opacity="0.25"/>
+    <circle cx="24" cy="24" r="1.5" fill="currentColor"/>
+  `
+};
+
+function renderComponents(components) {
+  const target = document.querySelector('[data-components-list]');
+  if (!target || !components.length) return;
+
+  target.innerHTML = components.map((component, index) => {
+    const delay = index % 4 ? ` d${index % 4}` : '';
+    const specs = (component.specs || []).map(([key, value]) => `
+      <li><span class="spec-k">${escapeHTML(key)}</span><span class="spec-v">${escapeHTML(value)}</span></li>
+    `).join('');
+
+    return `
+      <article class="component-card rv${delay}">
+        <div class="card-index">${String(index + 1).padStart(2, '0')} / ${escapeHTML(component.category)}</div>
+        <svg class="card-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          ${componentIcons[component.icon] || componentIcons.sensor}
+        </svg>
+        <h3 class="card-title">${escapeHTML(component.title)}</h3>
+        <p class="card-desc">${escapeHTML(component.description)}</p>
+        <ul class="card-specs">${specs}</ul>
+        <div class="card-bar" aria-hidden="true"></div>
+      </article>
+    `;
+  }).join('');
+}
+
 /* ──────────────────────────────────────────────────────────
    1. NAVBAR — hide on scroll-down, reveal on scroll-up
    ────────────────────────────────────────────────────────── */
 function initNavbar() {
   const nav = document.getElementById('navbar');
   if (!nav) return;
-  
-  let prevY = 0;
+
+  let prevY = window.scrollY;
   let ticking = false;
   const threshold = 60;
+  const revealDelta = 8;
 
   function update(y) {
+    const scrollingDown = y > prevY + revealDelta;
+    const scrollingUp = y < prevY - revealDelta;
+
     nav.classList.toggle('nav-scrolled', y > threshold);
-    
-    if (y > prevY && y > 100) {
+
+    if (scrollingDown && y > 120) {
       nav.classList.add('nav-hidden');
-    } else {
+    }
+
+    if (scrollingUp || y <= threshold) {
       nav.classList.remove('nav-hidden');
     }
+
     prevY = y;
   }
 
-  // Throttled scroll handler
   function onScroll() {
     if (!ticking) {
       requestAnimationFrame(() => {
@@ -49,190 +241,124 @@ function initNavbar() {
   update(window.scrollY);
 }
 
-
-// Add this helper after initBackgroundFade
-function initProblemTextColors() {
-  const problemSection = document.getElementById('problem');
-  const textEls = ['#problem-heading', '#prob-t1', '#prob-t2', '#prob-t3']
-    .map(s => document.querySelector(s))
-    .filter(Boolean);
-  
-  if (!problemSection || !textEls.length) return;
-  
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        const isInView = entry.isIntersecting;
-        textEls.forEach(el => {
-          if (isInView) {
-            // Dark section = light text
-            el.style.color = 'var(--dark-text)';
-            el.style.opacity = isInView ? '1' : '0.75';
-          } else {
-            // Light section = dark text (hero area)
-            el.style.color = 'var(--light-text)';
-            el.style.opacity = '0.75';
-          }
-        });
-      });
-    },
-    { threshold: 0.25 }
-  );
-  
-  observer.observe(problemSection);
-}
-
-// Call this in DOMContentLoaded alongside other inits
-document.addEventListener('DOMContentLoaded', () => {
-  initNavbar();
-  initBackgroundFade();      // ← Updated section-based version
-  initProblemTextColors();   // ← NEW: handles problem text specifically
-  initScrollReveal();
-  initStatCounters();
-  initHeroCanvas();
-  initMobileMenu();
-});
-
 /* ──────────────────────────────────────────────────────────
-   2. SECTION-BASED COLOR ANCHORS — Simple, reliable triggers
+   2. SECTION-BASED COLOR ANCHORS — CSS-driven background/text fade
    ────────────────────────────────────────────────────────── */
 function initBackgroundFade() {
-  const bg = document.getElementById('bg');
-  if (!bg) return;
+  const root = document.documentElement;
+  const sections = [...document.querySelectorAll('section[id]')];
+  if (!sections.length) return;
 
-  // Section themes: [sectionId, {bg, statsText, statsLabel, bodyText}]
   const themes = {
-    'hero': {
+    hero: {
       bg: 'rgb(238, 244, 255)',
+      text: 'rgb(10, 22, 40)',
+      muted: 'rgb(58, 79, 106)',
       statsText: 'rgb(10, 22, 40)',
-      statsLabel: 'rgb(106, 127, 150)',
-      bodyText: 'rgb(10, 22, 40)'
+      statsLabel: 'rgb(82, 102, 126)',
+      navText: 'rgb(10, 22, 40)',
+      navSurface: 'rgba(238, 244, 255, 0.74)',
+      navBorder: 'rgba(10, 22, 40, 0.08)',
+      theme: 'light'
     },
-    'problem': {
+    problem: {
       bg: 'rgb(10, 22, 40)',
+      text: 'rgb(232, 240, 255)',
+      muted: 'rgb(176, 192, 212)',
       statsText: 'rgb(232, 240, 255)',
-      statsLabel: 'rgb(136, 153, 170)',
-      bodyText: 'rgb(232, 240, 255)'
+      statsLabel: 'rgb(176, 192, 212)',
+      navText: 'rgb(232, 240, 255)',
+      navSurface: 'rgba(4, 8, 15, 0.82)',
+      navBorder: 'rgba(0, 229, 160, 0.12)',
+      theme: 'dark'
     },
-    'solution': {
+    solution: {
       bg: 'rgb(8, 14, 25)',
+      text: 'rgb(232, 240, 255)',
+      muted: 'rgb(151, 169, 190)',
       statsText: 'rgb(232, 240, 255)',
-      statsLabel: 'rgb(136, 153, 170)',
-      bodyText: 'rgb(232, 240, 255)'
+      statsLabel: 'rgb(151, 169, 190)',
+      navText: 'rgb(232, 240, 255)',
+      navSurface: 'rgba(4, 8, 15, 0.84)',
+      navBorder: 'rgba(0, 229, 160, 0.12)',
+      theme: 'dark'
     },
-    'components': {
+    components: {
       bg: 'rgb(8, 14, 25)',
+      text: 'rgb(232, 240, 255)',
+      muted: 'rgb(151, 169, 190)',
       statsText: 'rgb(232, 240, 255)',
-      statsLabel: 'rgb(136, 153, 170)',
-      bodyText: 'rgb(232, 240, 255)'
+      statsLabel: 'rgb(151, 169, 190)',
+      navText: 'rgb(232, 240, 255)',
+      navSurface: 'rgba(4, 8, 15, 0.84)',
+      navBorder: 'rgba(0, 229, 160, 0.12)',
+      theme: 'dark'
     },
-    'contact': {
+    contact: {
       bg: 'rgb(4, 8, 15)',
+      text: 'rgb(232, 240, 255)',
+      muted: 'rgb(151, 169, 190)',
       statsText: 'rgb(232, 240, 255)',
-      statsLabel: 'rgb(136, 153, 170)',
-      bodyText: 'rgb(232, 240, 255)'
+      statsLabel: 'rgb(151, 169, 190)',
+      navText: 'rgb(232, 240, 255)',
+      navSurface: 'rgba(4, 8, 15, 0.88)',
+      navBorder: 'rgba(0, 229, 160, 0.12)',
+      theme: 'dark'
     }
   };
 
-  const root = document.documentElement;
-  let currentTheme = null;
-  let isAnimating = false;
+  let currentThemeId = '';
+  let ticking = false;
 
-  function applyTheme(themeId, animate = true) {
+  function applyTheme(themeId) {
     const theme = themes[themeId];
-    if (!theme || themeId === currentTheme) return;
-    
-    if (!animate) {
-      // Instant apply (for reduced motion or initial load)
-      bg.style.background = theme.bg;
-      root.style.setProperty('--stats-text', theme.statsText);
-      root.style.setProperty('--stats-label', theme.statsLabel);
-      currentTheme = themeId;
-      return;
-    }
-    
-    if (isAnimating) return;
-    isAnimating = true;
-    
-    // Get current background for interpolation
-    const currentBg = bg.style.background || themes.hero.bg;
-    const currentMatch = currentBg.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-    const [cr, cg, cb] = currentMatch 
-      ? [parseInt(currentMatch[1]), parseInt(currentMatch[2]), parseInt(currentMatch[3])]
-      : [238, 244, 255];
-    
-    const targetMatch = theme.bg.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-    const [tr, tg, tb] = targetMatch 
-      ? [parseInt(targetMatch[1]), parseInt(targetMatch[2]), parseInt(targetMatch[3])]
-      : [238, 244, 255];
-    
-    const duration = 500;
-    const start = performance.now();
-    
-    function step(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = progress < 0.5 
-        ? 2 * progress * progress 
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-      
-      const r = Math.round(cr + (tr - cr) * eased);
-      const g = Math.round(cg + (tg - cg) * eased);
-      const b = Math.round(cb + (tb - cb) * eased);
-      
-      bg.style.background = `rgb(${r},${g},${b})`;
-      
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        // Finalize CSS variables
-        root.style.setProperty('--stats-text', theme.statsText);
-        root.style.setProperty('--stats-label', theme.statsLabel);
-        currentTheme = themeId;
-        isAnimating = false;
-      }
-    }
-    requestAnimationFrame(step);
+    if (!theme || themeId === currentThemeId) return;
+
+    root.dataset.section = themeId;
+    root.dataset.theme = theme.theme;
+    root.style.setProperty('--theme-bg', theme.bg);
+    root.style.setProperty('--theme-text', theme.text);
+    root.style.setProperty('--theme-muted', theme.muted);
+    root.style.setProperty('--stats-text', theme.statsText);
+    root.style.setProperty('--stats-label', theme.statsLabel);
+    root.style.setProperty('--nav-text', theme.navText);
+    root.style.setProperty('--nav-surface', theme.navSurface);
+    root.style.setProperty('--nav-border', theme.navBorder);
+    currentThemeId = themeId;
   }
 
-  // Simple scroll-based section detection (more reliable than IntersectionObserver for this use case)
-  function onScroll() {
-    const scrollY = window.scrollY;
-    const viewportH = window.innerHeight;
-    
-    // Check which section is most visible in viewport
-    for (const [sectionId, theme] of Object.entries(themes)) {
-      const section = document.getElementById(sectionId);
-      if (!section) continue;
-      
+  function getActiveSection() {
+    const anchor = window.innerHeight * 0.42;
+    let active = sections[0].id;
+
+    sections.forEach((section) => {
       const rect = section.getBoundingClientRect();
-      const sectionTop = rect.top + scrollY;
-      const sectionBottom = sectionTop + section.offsetHeight;
-      
-      // Trigger when section top is within top 40% of viewport
-      const triggerPoint = sectionTop - viewportH * 0.4;
-      
-      if (scrollY >= triggerPoint - 50 && scrollY < triggerPoint + viewportH * 0.6) {
-        applyTheme(sectionId);
-        return;
+      if (rect.top <= anchor && rect.bottom >= anchor) {
+        active = section.id;
       }
+    });
+
+    return themes[active] ? active : 'hero';
+  }
+
+  function updateTheme() {
+    applyTheme(getActiveSection());
+  }
+
+  function onScrollOrResize() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateTheme();
+        ticking = false;
+      });
+      ticking = true;
     }
   }
 
-  // Initial apply
-  applyTheme('hero', false);
-  
-  // Throttled scroll listener
-  let scrollTimeout;
-  window.addEventListener('scroll', () => {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(onScroll, 50);
-  }, { passive: true });
-  
-  // Also check on resize
-  window.addEventListener('resize', onScroll, { passive: true });
-  
-  // Initial check
-  onScroll();
+  applyTheme(getActiveSection());
+  window.addEventListener('scroll', onScrollOrResize, { passive: true });
+  window.addEventListener('resize', onScrollOrResize, { passive: true });
+  window.addEventListener('hashchange', updateTheme);
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -244,7 +370,7 @@ function initScrollReveal() {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('in');
-          observer.unobserve(entry.target); // Only animate once
+          observer.unobserve(entry.target);
         }
       });
     },
@@ -260,9 +386,9 @@ function initScrollReveal() {
 function initStatCounters() {
   const cells = document.querySelectorAll('[data-target]');
   if (!cells.length) return;
-  
+
   let triggered = false;
-  
+
   function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
   function animateCell(el) {
@@ -303,24 +429,13 @@ function initStatCounters() {
 function initHeroCanvas() {
   const canvas = document.getElementById('hero-canvas');
   if (!canvas) return;
-  
+
   const ctx = canvas.getContext('2d', { alpha: true });
   let animationId = null;
   let particles = [];
-  
-  // Debounced resize handler
   let resizeTimeout;
-  function handleResize() {
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
-    initParticles();
-  }
-  
-  function onResize() {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(handleResize, 100);
-  }
-  
+  let frame = 0;
+
   function initParticles() {
     const N = Math.min(70, Math.floor(window.innerWidth / 15));
     particles = Array.from({ length: N }, () => ({
@@ -334,16 +449,27 @@ function initHeroCanvas() {
     }));
   }
 
-  let frame = 0;
+  function handleResize() {
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+    initParticles();
+  }
+
+  function onResize() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(handleResize, 100);
+  }
+
   function draw() {
+    if (document.hidden) return;
+
     frame++;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
 
-      // Wrap around edges
       if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); }
       if (p.x < -0.02) p.x = 1.02;
       if (p.x > 1.02) p.x = -0.02;
@@ -356,22 +482,19 @@ function initHeroCanvas() {
       ctx.fillStyle = `rgba(41, 121, 255, ${alpha})`;
       ctx.fill();
     });
-    
+
     animationId = requestAnimationFrame(draw);
   }
-  
-  // Initialize
+
   handleResize();
   draw();
-  
-  // Event listeners
+
   window.addEventListener('resize', onResize, { passive: true });
-  
-  // Pause animation when tab is hidden (performance)
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       if (animationId) cancelAnimationFrame(animationId);
-    } else {
+      animationId = null;
+    } else if (!animationId) {
       draw();
     }
   });
@@ -384,23 +507,23 @@ function initMobileMenu() {
   const toggle = document.getElementById('nav-toggle');
   const closeBtn = document.getElementById('mobile-menu-close');
   const menu = document.getElementById('mobile-menu');
-  
+
   if (!toggle || !menu) return;
-  
+
   function openMenu() {
     menu.classList.add('active');
     menu.setAttribute('aria-hidden', 'false');
     toggle.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden'; // Prevent background scroll
+    document.body.style.overflow = 'hidden';
   }
-  
+
   function closeMenu() {
     menu.classList.remove('active');
     menu.setAttribute('aria-hidden', 'true');
     toggle.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   }
-  
+
   toggle.addEventListener('click', (e) => {
     e.stopPropagation();
     if (menu.classList.contains('active')) {
@@ -409,22 +532,19 @@ function initMobileMenu() {
       openMenu();
     }
   });
-  
+
   if (closeBtn) {
     closeBtn.addEventListener('click', closeMenu);
   }
-  
-  // Close on overlay click
+
   menu.addEventListener('click', (e) => {
     if (e.target === menu) closeMenu();
   });
-  
-  // Close on link click
+
   menu.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', closeMenu);
   });
-  
-  // Close on Escape key
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && menu.classList.contains('active')) {
       closeMenu();

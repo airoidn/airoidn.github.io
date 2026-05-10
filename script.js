@@ -4,6 +4,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  renderSiteContent();
   initNavbar();
   initBackgroundFade();
   initScrollReveal();
@@ -11,6 +12,161 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroCanvas();
   initMobileMenu();
 });
+
+
+/* ──────────────────────────────────────────────────────────
+   0. CONTENT RENDERING — centralized media and component data
+   ────────────────────────────────────────────────────────── */
+function renderSiteContent() {
+  const content = window.AIRO_CONTENT || {};
+  renderConfiguredMedia(content.media || {});
+  renderHeroStats(content.heroStats || []);
+  renderPowerNote(content.powerDisclaimer || '');
+  renderComponents(content.components || []);
+}
+
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;'
+  }[char]));
+}
+
+function renderConfiguredMedia(media) {
+  const applyImage = (img, item) => {
+    img.src = item.src;
+    img.alt = item.alt || '';
+    img.loading = item.loading || 'lazy';
+    img.decoding = item.decoding || 'async';
+  };
+
+  document.querySelectorAll('[data-media-figure]').forEach((figure) => {
+    const key = figure.dataset.mediaFigure;
+    const item = media[key];
+    if (!item || !item.src || item.enabled === false) return;
+
+    const caption = item.creditUrl
+      ? `${escapeHTML(item.caption)} · <a href="${escapeHTML(item.creditUrl)}" target="_blank" rel="noopener">${escapeHTML(item.creditText || 'Source')}</a>`
+      : escapeHTML(item.caption || '');
+
+    figure.innerHTML = `
+      <img>
+      ${caption ? `<figcaption class="problem-img-label">${caption}</figcaption>` : ''}
+    `;
+    applyImage(figure.querySelector('img'), item);
+  });
+
+  document.querySelectorAll('img[data-media-img]').forEach((img) => {
+    const item = media[img.dataset.mediaImg];
+    if (item && item.src && item.enabled !== false) applyImage(img, item);
+  });
+
+  document.querySelectorAll('[data-media-bg]').forEach((el) => {
+    const item = media[el.dataset.mediaBg];
+    if (item && item.src && item.enabled !== false) el.style.backgroundImage = `url("${item.src}")`;
+  });
+}
+
+function renderHeroStats(stats) {
+  const target = document.querySelector('[data-hero-stats]');
+  if (!target || !stats.length) return;
+
+  target.innerHTML = stats.map((stat) => {
+    const suffix = stat.suffix ? `<sup>${escapeHTML(stat.suffix)}</sup>` : '';
+    return `
+      <div class="hero-stat">
+        <div class="num">${escapeHTML(stat.value)}${suffix}</div>
+        <div class="lbl">${escapeHTML(stat.label)}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderPowerNote(note) {
+  document.querySelectorAll('[data-power-note]').forEach((el) => {
+    el.textContent = note;
+    el.hidden = !note;
+  });
+}
+
+const componentIcons = {
+  solar: `
+    <rect x="6" y="14" width="36" height="22" rx="3" stroke="currentColor" stroke-width="1.4"/>
+    <line x1="16" y1="14" x2="16" y2="36" stroke="currentColor" stroke-width="0.9" opacity="0.45"/>
+    <line x1="26" y1="14" x2="26" y2="36" stroke="currentColor" stroke-width="0.9" opacity="0.45"/>
+    <line x1="36" y1="14" x2="36" y2="36" stroke="currentColor" stroke-width="0.9" opacity="0.45"/>
+    <line x1="6" y1="25" x2="42" y2="25" stroke="currentColor" stroke-width="0.9" opacity="0.45"/>
+    <line x1="12" y1="8" x2="16" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="24" y1="6" x2="24" y2="12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="36" y1="8" x2="32" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    <circle cx="24" cy="42" r="2" fill="currentColor"/>
+  `,
+  hepa: `
+    <circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="1.4"/>
+    <circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="0.9" opacity="0.5"/>
+    <circle cx="24" cy="24" r="4" fill="currentColor" opacity="0.22"/>
+    <circle cx="24" cy="24" r="1.5" fill="currentColor"/>
+    <line x1="24" y1="8" x2="24" y2="14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="24" y1="34" x2="24" y2="40" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="8" y1="24" x2="14" y2="24" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <line x1="34" y1="24" x2="40" y2="24" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+  `,
+  battery: `
+    <rect x="8" y="18" width="32" height="14" rx="3" stroke="currentColor" stroke-width="1.4"/>
+    <rect x="40" y="21" width="4" height="8" rx="1" fill="currentColor" opacity="0.45"/>
+    <rect x="12" y="20" width="7" height="10" rx="1" fill="currentColor" opacity="0.75"/>
+    <rect x="21" y="20" width="7" height="10" rx="1" fill="currentColor" opacity="0.5"/>
+    <rect x="30" y="20" width="3" height="10" rx="1" fill="currentColor" opacity="0.22"/>
+  `,
+  sensor: `
+    <rect x="12" y="12" width="24" height="24" rx="4" stroke="currentColor" stroke-width="1.4"/>
+    <circle cx="24" cy="24" r="4" fill="currentColor" opacity="0.25"/>
+    <circle cx="24" cy="24" r="1.5" fill="currentColor"/>
+    <path d="M19 19 A7 7 0 0 1 29 19" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    <path d="M15 15 A13 13 0 0 1 33 15" stroke="currentColor" stroke-width="0.9" fill="none" stroke-linecap="round" opacity="0.4"/>
+  `,
+  housing: `
+    <rect x="14" y="8" width="20" height="34" rx="6" stroke="currentColor" stroke-width="1.4"/>
+    <line x1="14" y1="18" x2="34" y2="18" stroke="currentColor" stroke-width="0.9" opacity="0.4"/>
+    <line x1="14" y1="32" x2="34" y2="32" stroke="currentColor" stroke-width="0.9" opacity="0.4"/>
+    <circle cx="24" cy="38" r="2" fill="currentColor" opacity="0.55"/>
+    <line x1="19" y1="12" x2="29" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  `,
+  carbon: `
+    <path d="M24 6 L42 17 L42 31 L24 42 L6 31 L6 17 Z" stroke="currentColor" stroke-width="1.4" fill="none"/>
+    <path d="M24 14 L36 21 L36 27 L24 34 L12 27 L12 21 Z" stroke="currentColor" stroke-width="0.9" opacity="0.45" fill="none"/>
+    <circle cx="24" cy="24" r="4" fill="currentColor" opacity="0.25"/>
+    <circle cx="24" cy="24" r="1.5" fill="currentColor"/>
+  `
+};
+
+function renderComponents(components) {
+  const target = document.querySelector('[data-components-list]');
+  if (!target || !components.length) return;
+
+  target.innerHTML = components.map((component, index) => {
+    const delay = index % 4 ? ` d${index % 4}` : '';
+    const specs = (component.specs || []).map(([key, value]) => `
+      <li><span class="spec-k">${escapeHTML(key)}</span><span class="spec-v">${escapeHTML(value)}</span></li>
+    `).join('');
+
+    return `
+      <article class="component-card rv${delay}">
+        <div class="card-index">${String(index + 1).padStart(2, '0')} / ${escapeHTML(component.category)}</div>
+        <svg class="card-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          ${componentIcons[component.icon] || componentIcons.sensor}
+        </svg>
+        <h3 class="card-title">${escapeHTML(component.title)}</h3>
+        <p class="card-desc">${escapeHTML(component.description)}</p>
+        <ul class="card-specs">${specs}</ul>
+        <div class="card-bar" aria-hidden="true"></div>
+      </article>
+    `;
+  }).join('');
+}
 
 /* ──────────────────────────────────────────────────────────
    1. NAVBAR — hide on scroll-down, reveal on scroll-up

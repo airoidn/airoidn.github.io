@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
    ────────────────────────────────────────────────────────── */
 function renderSiteContent() {
   const content = window.AIRO_CONTENT || {};
-  renderConfiguredMedia(content.media || {}, content.assetBasePath || '');
+  renderConfiguredMedia(content.media || {});
   renderHeroStats(content.heroStats || []);
   renderPowerNote(content.powerDisclaimer || '');
   renderComponents(content.components || []);
@@ -35,40 +35,12 @@ function escapeHTML(value) {
   }[char]));
 }
 
-function renderConfiguredMedia(media, assetBasePath = '') {
-  const fallback = media.fallback;
-
-  function resolveAssetPath(src = '') {
-    if (!src || /^(https?:|data:|blob:|\/)/.test(src)) return src;
-    const cleanBase = assetBasePath.replace(/\/$/, '');
-    const cleanSrc = src.replace(/^\.\//, '');
-    return cleanBase ? `${cleanBase}/${cleanSrc}` : cleanSrc;
-  }
-
+function renderConfiguredMedia(media) {
   const applyImage = (img, item) => {
-    if (!img || !item?.src) return;
-
-    img.classList.remove('media-loaded', 'media-failed');
+    img.src = item.src;
     img.alt = item.alt || '';
     img.loading = item.loading || 'lazy';
     img.decoding = item.decoding || 'async';
-
-    img.onload = () => {
-      img.classList.add('media-loaded');
-      img.classList.remove('media-failed');
-    };
-
-    img.onerror = () => {
-      img.classList.add('media-failed');
-      img.classList.remove('media-loaded');
-
-      if (fallback?.src && img.dataset.fallbackApplied !== 'true') {
-        img.dataset.fallbackApplied = 'true';
-        img.src = resolveAssetPath(fallback.src);
-      }
-    };
-
-    img.src = resolveAssetPath(item.src);
   };
 
   document.querySelectorAll('[data-media-figure]').forEach((figure) => {
@@ -94,9 +66,7 @@ function renderConfiguredMedia(media, assetBasePath = '') {
 
   document.querySelectorAll('[data-media-bg]').forEach((el) => {
     const item = media[el.dataset.mediaBg];
-    if (item && item.src && item.enabled !== false) {
-      el.style.backgroundImage = `url("${resolveAssetPath(item.src)}")`;
-    }
+    if (item && item.src && item.enabled !== false) el.style.backgroundImage = `url("${item.src}")`;
   });
 }
 
@@ -314,7 +284,6 @@ function initBackgroundFade() {
     const theme = themes[themeId];
     if (!theme || themeId === currentThemeId) return;
 
-    root.dataset.section = themeId;
     root.dataset.theme = theme.theme;
     root.style.setProperty('--theme-bg', theme.bg);
     root.style.setProperty('--theme-text', theme.text);

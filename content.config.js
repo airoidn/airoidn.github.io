@@ -3,44 +3,29 @@
  * Update images, captions, hero metrics, product notes, or component order here.
  */
 window.AIRO_CONTENT = {
-  assetBasePath: '',
   media: {
-    heroSky: {
-      src: 'assets/media/hero-sky.svg',
-      alt: '',
-      loading: 'eager',
-      decoding: 'async'
-    },
     problemOsakaSkyline: {
-      src: 'assets/media/osaka-skyline.svg',
-      alt: 'Osaka skyline inspired by Umeda and Nakanoshima, Japan',
-      caption: 'Osaka skyline · local fallback artwork',
-      creditText: '',
-      creditUrl: '',
+      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Skyline_in_Osaka.jpg/800px-Skyline_in_Osaka.jpg',
+      alt: 'Umeda and Nakanoshima skyline in Osaka, Japan',
+      caption: 'Osaka skyline · Umeda / Nakanoshima',
+      creditText: 'Public domain photo',
+      creditUrl: 'https://commons.wikimedia.org/wiki/File:Skyline_in_Osaka.jpg',
       loading: 'lazy',
       decoding: 'async'
     },
     devicePreview: {
-      src: 'assets/media/device-preview.svg',
+      src: 'assets/media/device-preview.webp',
       alt: 'AIRO portable purifier device preview',
       caption: 'Device preview',
       type: 'device-preview',
-      loading: 'eager',
-      decoding: 'async'
+      enabled: false
     },
     showcaseMockup: {
-      src: 'assets/media/showcase-mockup.svg',
+      src: 'assets/media/showcase-mockup.webp',
       alt: 'AIRO product showcase mockup',
       caption: 'Product showcase',
       type: 'showcase',
-      loading: 'lazy',
-      decoding: 'async'
-    },
-    fallback: {
-      src: 'assets/media/image-fallback.svg',
-      alt: 'AIRO image fallback',
-      loading: 'lazy',
-      decoding: 'async'
+      enabled: false
     }
   },
 

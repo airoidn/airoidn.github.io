@@ -50,7 +50,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: color var(--theme-duration) var(--ease);
+  transition: color 420ms var(--ease);
 }
 
 
@@ -70,7 +70,7 @@ body {
   background: var(--theme-bg);
   pointer-events: none;
   will-change: background;
-  transition: background var(--theme-duration) var(--ease);
+  transition: background 620ms var(--ease);
 }
 
 /* ============================================================
@@ -289,7 +289,7 @@ body {
   height: 100%;
   overflow: hidden;
   z-index: 0;
-  transition: opacity var(--theme-duration) var(--ease);
+  transition: opacity 620ms var(--ease);
 }
 :root[data-theme="dark"] .hero-sky {
   opacity: 0;
@@ -429,8 +429,8 @@ body {
   font-weight: 800;
   color: var(--stats-text, var(--light-text));
   line-height: 1;
-  transition: color var(--theme-duration) var(--ease);
-  text-shadow: none;
+  transition: color 420ms var(--ease), text-shadow 420ms var(--ease);
+  text-shadow: 0 10px 28px rgba(4, 8, 15, 0.22);
 }
 
 .hero-stat .num sup {
@@ -444,11 +444,25 @@ body {
   color: var(--stats-label, #6A7F96);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: color var(--theme-duration) var(--ease);
-  text-shadow: none;
+  transition: color 420ms var(--ease), text-shadow 420ms var(--ease);
+  text-shadow: 0 8px 22px rgba(4, 8, 15, 0.2);
 }
 
-/* Mobile stats are moved below hero copy in the responsive section. */
+/* Mobile: horizontal stats bar */
+@media (max-width: 768px) {
+  .hero-stats {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    flex-direction: row;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 48px;
+    width: 100%;
+    background: transparent !important;
+  }
+  .hero-stat { text-align: center; }
+}
 
 /* Scroll hint */
 .scroll-hint {
@@ -480,7 +494,7 @@ body {
 .product-desc, .feature-list li, .components-heading, .components-subtext,
 .card-title, .card-desc, .spec-v, .cta-heading, .cta-sub, .btn-ghost,
 .scroll-hint span, .scroll-line {
-  transition: color var(--theme-duration) var(--ease), background var(--theme-duration) var(--ease), border-color var(--theme-duration) var(--ease), opacity var(--theme-duration) var(--ease);
+  transition: color 420ms var(--ease), background 420ms var(--ease), border-color 420ms var(--ease), opacity 420ms var(--ease);
 }
 
 /* ============================================================
@@ -556,13 +570,6 @@ section {
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--theme-muted);
-}
-.problem-img-label a {
-  color: inherit;
-  text-underline-offset: 3px;
-}
-.problem-img-label a:hover {
-  color: var(--accent);
 }
 
 .problem-copy { display: flex; flex-direction: column; gap: 28px; }
@@ -1190,7 +1197,17 @@ footer {
   }
 }
 
-:root[data-theme] .hero-stat .num,
-:root[data-theme] .hero-stat .lbl {
-  text-shadow: none;
+:root[data-theme="light"] .hero-stat .num,
+:root:not([data-theme]) .hero-stat .num {
+  text-shadow: 0 10px 28px rgba(4, 8, 15, 0.22);
+}
+
+:root[data-theme="light"] .hero-stat .lbl,
+:root:not([data-theme]) .hero-stat .lbl {
+  text-shadow: 0 8px 22px rgba(4, 8, 15, 0.18);
+}
+
+:root[data-theme="dark"] .hero-stat .num,
+:root[data-theme="dark"] .hero-stat .lbl {
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.42), 0 0 20px rgba(0, 229, 160, 0.08);
 }

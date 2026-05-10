@@ -284,7 +284,6 @@ function initBackgroundFade() {
     const theme = themes[themeId];
     if (!theme || themeId === currentThemeId) return;
 
-    root.dataset.section = themeId;
     root.dataset.theme = theme.theme;
     root.style.setProperty('--theme-bg', theme.bg);
     root.style.setProperty('--theme-text', theme.text);

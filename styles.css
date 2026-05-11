@@ -460,19 +460,21 @@ body {
   }
 }
 
-/* 📱 MOBILE (<768px): Horizontal, centered — YOUR WORKING CODE */
+/* 📱 MOBILE (<768px): Horizontal, centered — FIXED */
 @media (max-width: 768px) {
   .hero-stats {
     position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+    left: auto;           /* Reset desktop/hack values */
+    transform: none;      /* Reset transform */
+    margin: 36px 0 40px;  /* Vertical spacing */
+    align-self: center;   /* ← Centers stats horizontally */
+    
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 14px 28px;
-    margin: 36px 0 40px;
     width: auto;
     max-width: calc(100% - 32px);
     padding: 18px 0;
@@ -1125,8 +1127,9 @@ footer {
   #hero {
     min-height: auto;
     padding-top: 132px;
-    position: relative; /* ← MUST be here for absolute children */
+    position: relative;
     padding-bottom: 96px;
+    flex-direction: column; /* ← CRITICAL: Stacks stats under hero text */
     align-items: flex-start;
   }
 

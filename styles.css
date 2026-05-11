@@ -438,8 +438,7 @@ body {
   .hero-stats {
     position: absolute;
     left: auto;              /* ← CRITICAL: Clears mobile's left: 50% */
-    /* Closer to hero text */
-    right: clamp(-300px, -30vw, -500px);
+    right: clamp(60px, 6vw, 120px);
     top: 50%;
     bottom: auto;            /* Clean reset */
     transform: translateY(-50%); /* Replaces mobile's translateX */

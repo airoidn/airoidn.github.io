@@ -36,12 +36,29 @@ function escapeHTML(value) {
 }
 
 function renderConfiguredMedia(media) {
-  const applyImage = (img, item) => {
-    img.src = item.src;
-    img.alt = item.alt || '';
-    img.loading = item.loading || 'lazy';
-    img.decoding = item.decoding || 'async';
+function applyImage(img, item) {
+  // Reset classes first
+  img.classList.remove('media-loaded', 'media-failed');
+  
+  // Set image attributes
+  img.src = item.src;
+  img.alt = item.alt || '';
+  img.loading = item.loading || 'lazy';
+  img.decoding = item.decoding || 'async';
+  
+  // Handle successful load
+  img.onload = () => {
+    img.classList.add('media-loaded');
+    img.classList.remove('media-failed');
   };
+  
+  // Handle load error
+  img.onerror = () => {
+    img.classList.add('media-failed');
+    img.classList.remove('media-loaded');
+    console.warn(`🖼️ Failed to load: ${item.src}`);
+  };
+}
 
   document.querySelectorAll('[data-media-figure]').forEach((figure) => {
     const key = figure.dataset.mediaFigure;

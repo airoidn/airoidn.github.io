@@ -64,43 +64,38 @@
        HERO
        =========================================================== -->
   <section id="hero" aria-labelledby="hero-title">
-    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-sky" aria-hidden="true">
+    <img data-media-img="problemOsakaSkyline" alt="">
+  </div>
 
-    <!-- Sky background visual -->
-    <div class="hero-sky" aria-hidden="true">
-      <img data-media-img="heroSky" alt="">
+  <!-- Hero content (left side) -->
+  <div class="hero-content">
+    <p class="hero-eyebrow">Osaka, Japan · Innovation 2026</p>
+    <h1 class="hero-title" id="hero-title">
+      Breathe<br>
+      <span class="accent-word">Clean.</span><br>
+      Live Free.
+    </h1>
+    <p class="hero-subtitle">
+      AIRO is a solar-assisted, portable air purifier engineered for Osaka's
+      indoor air crisis — delivering hospital-grade clean air with flexible
+      solar and USB Type-C charging options.
+    </p>
+    <div class="hero-actions">
+      <a href="#solution" class="btn-primary">Discover AIRO</a>
+      <a href="#problem" class="btn-link">Why it matters →</a>
     </div>
+  </div>
 
-    <!-- Main copy -->
-    <div class="hero-content">
-      <p class="hero-eyebrow">Osaka, Japan · Innovation 2026</p>
+  <!-- Stats: NOW OUTSIDE .hero-content, positioned independently -->
+  <div class="hero-stats" data-hero-stats aria-label="AIRO highlights"></div>
 
-      <h1 class="hero-title" id="hero-title">
-        Breathe<br>
-        <span class="accent-word">Clean.</span><br>
-        Live Free.
-      </h1>
-
-      <p class="hero-subtitle">
-        AIRO is a solar-assisted, portable air purifier engineered for Osaka's
-        indoor air crisis — delivering hospital-grade clean air with flexible
-        solar and USB Type-C charging options.
-      </p>
-
-      <div class="hero-actions">
-        <a href="#solution" class="btn-primary">Discover AIRO</a>
-        <a href="#problem" class="btn-link">Why it matters →</a>
-      </div>
-    </div>
-
-    <!-- Floating metric panel -->
-    <div class="hero-stats" data-hero-stats aria-label="AIRO highlights"></div>
-
-    <div class="scroll-hint">
-      <div class="scroll-line" aria-hidden="true"></div>
-      <span>Scroll to explore</span>
-    </div>
-  </section>
+  <div class="scroll-hint">
+    <div class="scroll-line" aria-hidden="true"></div>
+    <span>Scroll to explore</span>
+  </div>
+</section>
 
   <!-- ===========================================================
        PROBLEM SECTION

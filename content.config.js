@@ -4,6 +4,19 @@
  */
 window.AIRO_CONTENT = {
   media: {
+    // Hero section sky background
+    heroSky: {
+      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Skyline_in_Osaka.jpg/800px-Skyline_in_Osaka.jpg',
+      alt: 'Osaka skyline background for hero section',
+      caption: 'Osaka skyline · Umeda / Nakanoshima',
+      creditText: 'Public domain photo',
+      creditUrl: 'https://commons.wikimedia.org/wiki/File:Skyline_in_Osaka.jpg',
+      loading: 'lazy',
+      decoding: 'async',
+      enabled: true
+    },
+    
+    // Problem section image (can reuse same source)
     problemOsakaSkyline: {
       src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Skyline_in_Osaka.jpg/800px-Skyline_in_Osaka.jpg',
       alt: 'Umeda and Nakanoshima skyline in Osaka, Japan',
@@ -11,15 +24,21 @@ window.AIRO_CONTENT = {
       creditText: 'Public domain photo',
       creditUrl: 'https://commons.wikimedia.org/wiki/File:Skyline_in_Osaka.jpg',
       loading: 'lazy',
-      decoding: 'async'
+      decoding: 'async',
+      enabled: true
     },
+    
+    // Device preview image - UPDATE PATH OR USE PLACEHOLDER FOR TESTING
     devicePreview: {
-      src: 'assets/media/device-preview.webp',
+      // For production: 'assets/media/device-preview.webp'
+      // For testing: use a public placeholder:
+      src: 'https://via.placeholder.com/360x480/0C1A2E/00E5A0?text=AIRO+Device',
       alt: 'AIRO portable purifier device preview',
       caption: 'Device preview',
       type: 'device-preview',
-      enabled: false
+      enabled: true  // Set to false to hide and show SVG fallback
     },
+    
     showcaseMockup: {
       src: 'assets/media/showcase-mockup.webp',
       alt: 'AIRO product showcase mockup',

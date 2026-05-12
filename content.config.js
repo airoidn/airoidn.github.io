@@ -6,7 +6,7 @@ window.AIRO_CONTENT = {
   media: {
     // Hero section sky background
     heroSky: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Skyline_in_Osaka.jpg/800px-Skyline_in_Osaka.jpg',
+      src: 'assets/media/hero-sky.svg',
       alt: 'Osaka skyline background for hero section',
       caption: 'Osaka skyline · Umeda / Nakanoshima',
       creditText: 'Public domain photo',
@@ -18,7 +18,7 @@ window.AIRO_CONTENT = {
     
     // Problem section image (can reuse same source)
     problemOsakaSkyline: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Skyline_in_Osaka.jpg/800px-Skyline_in_Osaka.jpg',
+      src: 'assets/media/osaka-skyline.svg',
       alt: 'Umeda and Nakanoshima skyline in Osaka, Japan',
       caption: 'Osaka skyline · Umeda / Nakanoshima',
       creditText: 'Public domain photo',
@@ -32,7 +32,7 @@ window.AIRO_CONTENT = {
     devicePreview: {
       // For production: 'assets/media/device-preview.webp'
       // For testing: use a public placeholder:
-      src: 'https://via.placeholder.com/360x480/0C1A2E/00E5A0?text=AIRO+Device',
+      src: 'assets/media/device-preview.svg',
       alt: 'AIRO portable purifier device preview',
       caption: 'Device preview',
       type: 'device-preview',

@@ -728,24 +728,31 @@ section {
 .device-preview-img {
   position: relative;
   z-index: 1;
+  display: block; /* ← CRITICAL: Makes object-fit work */
   width: min(76%, 360px);
   height: auto;
+  max-height: 90%; /* ← Prevent overflow */
+  margin: 0 auto; /* ← Center horizontally */
   animation: float 6s ease-in-out infinite;
-  max-height: 100%;
   object-fit: contain;
+  object-position: center;
 }
 
 .device-preview-img.media-failed {
   display: none;
 }
 
+/* Ensure SVG fallback also centers properly */
 .device-preview-img:not(.media-loaded) + .device-svg,
 .device-svg {
   position: relative;
   z-index: 1;
-  animation: float 6s ease-in-out infinite;
-  max-width: 100%;
+  display: block;
+  width: min(76%, 360px);
   height: auto;
+  max-height: 90%;
+  margin: 0 auto;
+  animation: float 6s ease-in-out infinite;
 }
 
 .device-preview-img.media-loaded + .device-svg {

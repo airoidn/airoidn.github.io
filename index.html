@@ -66,7 +66,7 @@
   <section id="hero" aria-labelledby="hero-title">
   <canvas id="hero-canvas" aria-hidden="true"></canvas>
   <div class="hero-sky" aria-hidden="true">
-    <img data-media-img="problemOsakaSkyline" alt="">
+    <img data-media-img="heroSky" alt="">
   </div>
 
   <!-- Hero content (left side) -->
@@ -105,16 +105,9 @@
 
     <div class="problem-grid">
       <!-- Left: sticky real-world image -->
-      <figure class="problem-img-wrap">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Skyline_in_Osaka.JPG/800px-Skyline_in_Osaka.JPG"
-          alt="Umeda and Nakanoshima skyline in Osaka, Japan"
-          loading="lazy"
-          decoding="async">
-        <figcaption class="problem-img-label">
-          Osaka skyline · Umeda / Nakanoshima ·
-          <a href="https://commons.wikimedia.org/wiki/File:Skyline_in_Osaka.JPG" target="_blank" rel="noopener">Public domain photo</a>
-        </figcaption>
+      <figure class="problem-img-wrap" data-media-figure="problemOsakaSkyline">
+        <!-- Image will be injected by JS from content.config.js -->
+        <figcaption class="problem-img-label"></figcaption>
       </figure>
 
       <!-- Right: problem narrative + stats -->

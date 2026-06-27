@@ -1,307 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#04080F">
-  <meta name="description" content="AIRO — Solar-assisted portable air purifier with USB Type-C charging for clean air anywhere.">
-  <title>AIRO — Clean Air. Everywhere.</title>
-  
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&family=Syne+Mono&display=swap" rel="stylesheet">
-  
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AIRO — Clean Air, Anywhere.</title>
+<meta name="description" content="AIRO is a portable solar-powered air purifier and indoor air quality monitoring system." />
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Fixed background (JS fades light → dark) -->
-  <div id="bg" aria-hidden="true"></div>
-
-  <!-- ===========================================================
-       NAVBAR
-       =========================================================== -->
-  <nav id="navbar" role="navigation" aria-label="Main navigation">
-    <a href="#hero" class="nav-logo" aria-label="AIRO Home">AIRO</a>
-
-    <!-- Desktop Navigation -->
-    <ul class="nav-links" role="menubar">
-      <li role="none"><a href="#problem" role="menuitem">The Problem</a></li>
-      <li role="none"><a href="#solution" role="menuitem">Solution</a></li>
-      <li role="none"><a href="#components" role="menuitem">Technology</a></li>
-      <li role="none"><a href="#contact" role="menuitem">Contact</a></li>
-    </ul>
-
-    <a href="#contact" class="nav-cta">Early Access</a>
-
-    <!-- Mobile Hamburger -->
-    <button class="nav-hamburger" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
+<!-- ========================= NAVIGATION ========================= -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="#home" class="logo">
+      <span class="logo-icon">◐</span>
+      <span class="logo-text">AIRO</span>
+    </a>
+    <ul class="nav-links" id="navLinks"></ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
     </button>
-  </nav>
+  </div>
+</nav>
 
-  <!-- Mobile Menu Overlay -->
-  <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
-    <div class="mobile-menu-content">
-      <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">&times;</button>
-      <nav aria-label="Mobile navigation">
-        <ul class="mobile-nav-links">
-          <li><a href="#problem" class="mobile-nav-link">The Problem</a></li>
-          <li><a href="#solution" class="mobile-nav-link">Solution</a></li>
-          <li><a href="#components" class="mobile-nav-link">Technology</a></li>
-          <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
-        </ul>
-        <a href="#contact" class="mobile-cta">Early Access</a>
-      </nav>
+<!-- ========================= HERO ========================= -->
+<section class="hero" id="home">
+  <div class="hero-container">
+    <div class="hero-text fade-up">
+      <span class="hero-badge">🌿 Research Project</span>
+      <h1 class="hero-title">AIRO</h1>
+      <p class="hero-subtitle">Portable Solar-Powered Air Purifier & Indoor Air Monitoring System</p>
+      <p class="hero-motto">"Clean Air, Anywhere."</p>
+      <div class="hero-cta">
+        <a href="#solution" class="btn btn-primary">Learn More</a>
+        <a href="#components" class="btn btn-secondary">View Components</a>
+      </div>
     </div>
-  </div>
-
-  <!-- ===========================================================
-       HERO
-       =========================================================== -->
-  <section id="hero" aria-labelledby="hero-title">
-  <canvas id="hero-canvas" aria-hidden="true"></canvas>
-  <div class="hero-sky" aria-hidden="true">
-    <img data-media-img="heroSky" alt="">
-  </div>
-
-  <!-- Hero content (left side) -->
-  <div class="hero-content">
-    <p class="hero-eyebrow">Osaka, Japan · Innovation 2026</p>
-    <h1 class="hero-title" id="hero-title">
-      Breathe<br>
-      <span class="accent-word">Clean.</span><br>
-      Live Free.
-    </h1>
-    <p class="hero-subtitle">
-      AIRO is a solar-assisted, portable air purifier engineered for Osaka's
-      indoor air crisis — delivering hospital-grade clean air with flexible
-      solar and USB Type-C charging options.
-    </p>
-    <div class="hero-actions">
-      <a href="#solution" class="btn-primary">Discover AIRO</a>
-      <a href="#problem" class="btn-link">Why it matters →</a>
+    <div class="hero-visual">
+      <div class="floating-sun"></div>
+      <div class="floating-leaf leaf-1"></div>
+      <div class="floating-leaf leaf-2"></div>
+      <div class="floating-leaf leaf-3"></div>
+      <div class="floating-panel"></div>
+      <div class="air-flow"></div>
+      <div class="particles" id="particles"></div>
     </div>
-  </div>
-
-  <!-- Stats: NOW OUTSIDE .hero-content, positioned independently -->
-  <div class="hero-stats" data-hero-stats aria-label="AIRO highlights"></div>
-
-  <div class="scroll-hint">
-    <div class="scroll-line" aria-hidden="true"></div>
-    <span>Scroll to explore</span>
   </div>
 </section>
 
-  <!-- ===========================================================
-       PROBLEM SECTION
-       =========================================================== -->
-  <section id="problem" aria-labelledby="problem-heading">
-    <div class="section-label rv">The Problem</div>
+<!-- ========================= THE PROBLEM ========================= -->
+<section class="section" id="problem">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">The Problem</span>
+      <h2 class="section-title">Why Indoor Air Matters</h2>
+      <p class="section-desc">We spend most of our time indoors, yet the air we breathe is often overlooked.</p>
+    </div>
+    <div class="cards-grid" id="problemGrid"></div>
+    <div class="stat-highlight fade-up">
+      <span class="stat-icon">⚠️</span>
+      <p class="stat-text">"Indoor air can sometimes be more polluted than outdoor air."</p>
+      <span class="stat-cite">— Placeholder for future citation</span>
+    </div>
+  </div>
+</section>
 
-    <div class="problem-grid">
-      <!-- Left: sticky real-world image -->
-      <figure class="problem-img-wrap" data-media-figure="problemOsakaSkyline">
-        <!-- Image will be injected by JS from content.config.js -->
-        <figcaption class="problem-img-label"></figcaption>
-      </figure>
-
-      <!-- Right: problem narrative + stats -->
-      <div class="problem-copy">
-        <h2 class="problem-heading rv" id="problem-heading">
-          Osaka's air<br>is silently<br>hurting you.
-        </h2>
-
-        <p class="problem-body-text rv d1">
-          Indoor air quality across Osaka registers up to <strong>5× worse</strong> than
-          outdoor levels. Modern sealed buildings trap VOCs, fine particulate
-          matter (PM2.5), allergens, and chemical off-gassing — invisible threats
-          that accumulate throughout the day.
-        </p>
-
-        <p class="problem-body-text rv d2">
-          With over <strong>2.7 million residents</strong> spending up to 90% of their time
-          indoors, chronic exposure has become a public health crisis quietly hidden
-          behind closed doors — linked to asthma, cardiovascular disease, and
-          measurably reduced cognitive performance.
-        </p>
-
-        <p class="problem-body-text rv d3">
-          Existing solutions demand permanent installation, constant electricity,
-          and expensive upkeep. For renters, travelers, offices, and emergency
-          scenarios, there was simply no answer. <em>Until AIRO.</em>
-        </p>
-
-        <!-- Animated stat cells -->
-        <div class="stats-grid rv d4">
-          <div class="stat-cell">
-            <div class="stat-num" data-target="5" data-suffix="×">0</div>
-            <div class="stat-desc">Worse indoor air vs.<br>outdoors in Osaka</div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-num" data-target="90" data-suffix="%">0</div>
-            <div class="stat-desc">Of time city residents<br>spend indoors</div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-num" data-target="2.7" data-suffix="M" data-decimal="1">0</div>
-            <div class="stat-desc">Osaka residents at risk<br>from indoor pollutants</div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-num" data-target="40" data-suffix="%">0</div>
-            <div class="stat-desc">Of hospital admissions<br>linked to air quality</div>
+<!-- ========================= OUR SOLUTION ========================= -->
+<section class="section section-alt" id="solution">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">Our Solution</span>
+      <h2 class="section-title">Meet AIRO</h2>
+      <p class="section-desc">A compact, solar-powered purifier that moves with you and monitors the air you breathe.</p>
+    </div>
+    <div class="solution-grid">
+      <div class="solution-visual fade-up">
+        <div class="airflow-diagram">
+          <div class="airflow-unit">
+            <div class="airflow-label">Dirty Air</div>
+            <div class="airflow-arrow">→</div>
+            <div class="airflow-filter">Eggshell Filter</div>
+            <div class="airflow-arrow">→</div>
+            <div class="airflow-filter">Activated Carbon</div>
+            <div class="airflow-arrow">→</div>
+            <div class="airflow-filter">HEPA Filter</div>
+            <div class="airflow-arrow">→</div>
+            <div class="airflow-label clean">Clean Air ✨</div>
           </div>
         </div>
       </div>
+      <ul class="solution-list fade-up" id="solutionList"></ul>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ===========================================================
-       SOLUTION SECTION
-       =========================================================== -->
-  <section id="solution" aria-labelledby="solution-heading">
-    <div class="solution-intro">
-      <div class="section-label rv">The Solution</div>
-      <h2 class="solution-heading rv" id="solution-heading">
-        Portable power.<br>
-        <span class="hl">Clean air.</span><br>
-        Flexible charging.
-      </h2>
-      <p class="solution-sub rv">
-        AIRO pairs a medical-grade dual-layer filtration system with an integrated
-        solar charging array, USB Type-C charging, and a 48-hour battery — making
-        clean air easier to carry from home to office to travel.
-      </p>
+<!-- ========================= FEATURES ========================= -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">Features</span>
+      <h2 class="section-title">What Makes AIRO Special</h2>
     </div>
+    <div class="cards-grid features-grid" id="featuresGrid"></div>
+  </div>
+</section>
 
-    <div class="product-layout">
-      <!-- Animated product illustration -->
-      <div class="product-visual rv" aria-hidden="true">
-        <img class="device-preview-img" data-media-img="devicePreview" alt="">
-        <svg class="device-svg" width="260" height="260" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="grd" cx="50%" cy="50%" r="50%">
-              <stop offset="0%"   stop-color="#00E5A0" stop-opacity="0.15"/>
-              <stop offset="100%" stop-color="#00E5A0" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <circle class="orbit-1" cx="110" cy="110" r="98" fill="none"
-                  stroke="rgba(0,229,160,0.14)" stroke-width="1.2" stroke-dasharray="7 14"/>
-          <circle class="orbit-2" cx="110" cy="110" r="82" fill="none"
-                  stroke="rgba(0,229,160,0.09)" stroke-width="1"   stroke-dasharray="3 18"/>
-          <ellipse cx="110" cy="190" rx="50" ry="10" fill="rgba(0,229,160,0.18)"/>
-          <rect x="72" y="50"  width="76" height="128" rx="18" fill="#0C1A2E" stroke="rgba(0,229,160,0.38)" stroke-width="1.5"/>
-          <rect x="75" y="53"  width="70" height="36"  rx="5" fill="#091525"/>
-          <g stroke="rgba(0,229,160,0.28)" stroke-width="0.6">
-            <line x1="92"  y1="53" x2="92"  y2="89"/><line x1="110" y1="53" x2="110" y2="89"/>
-            <line x1="127" y1="53" x2="127" y2="89"/><line x1="75"  y1="71" x2="145" y2="71"/>
-          </g>
-          <g stroke="rgba(0,229,160,0.45)" stroke-width="1.6" stroke-linecap="round">
-            <line x1="82" y1="104" x2="138" y2="104"/><line x1="82" y1="115" x2="138" y2="115"/>
-            <line x1="82" y1="126" x2="138" y2="126"/><line x1="82" y1="137" x2="138" y2="137"/>
-            <line x1="82" y1="148" x2="138" y2="148"/>
-          </g>
-          <circle cx="110" cy="165" r="5" fill="#00E5A0" opacity="0.85">
-            <animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" repeatCount="indefinite"/>
-            <animate attributeName="r" values="4;5.5;4" dur="2.4s" repeatCount="indefinite"/>
-          </circle>
-          <rect x="82" y="54" width="56" height="14" rx="2" fill="#00E5A0" opacity="0.04"/>
-          <text x="110" y="65" text-anchor="middle" fill="rgba(0,229,160,0.5)"
-                font-family="monospace" font-size="6" letter-spacing="1">PM2.5: 02</text>
-          <circle class="puff" cx="95"  cy="100" r="2.5" fill="rgba(0,229,160,0.75)"
-                  style="animation-duration:3.2s;animation-delay:0s;--drift:12px"/>
-          <circle class="puff" cx="110" cy="96"  r="2"   fill="rgba(0,229,160,0.55)"
-                  style="animation-duration:4s;animation-delay:0.9s;--drift:-8px"/>
-          <circle class="puff" cx="124" cy="102" r="3"   fill="rgba(0,229,160,0.65)"
-                  style="animation-duration:3.6s;animation-delay:1.6s;--drift:18px"/>
-          <circle class="puff" cx="100" cy="98"  r="1.5" fill="rgba(0,229,160,0.45)"
-                  style="animation-duration:5s;animation-delay:2.4s;--drift:-14px"/>
-          <circle class="puff" cx="118" cy="99"  r="2.2" fill="rgba(0,229,160,0.6)"
-                  style="animation-duration:4.4s;animation-delay:0.4s;--drift:6px"/>
-        </svg>
+<!-- ========================= COMPONENTS ========================= -->
+<section class="section section-alt" id="components">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">Components</span>
+      <h2 class="section-title">Inside the System</h2>
+      <p class="section-desc">Every component is carefully selected for efficiency, portability, and sustainability.</p>
+    </div>
+    <div class="cards-grid components-grid" id="componentsGrid"></div>
+  </div>
+</section>
+
+<!-- ========================= HOW IT WORKS ========================= -->
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">How It Works</span>
+      <h2 class="section-title">From Sunlight to Clean Air</h2>
+    </div>
+    <div class="timeline-wrapper">
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= DASHBOARD ========================= -->
+<section class="section section-alt" id="dashboard">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">Live Monitoring</span>
+      <h2 class="section-title">Air Quality Dashboard</h2>
+      <p class="section-desc">Real-time readings powered by onboard sensors.</p>
+    </div>
+    <div class="dashboard fade-up">
+      <div class="gauge-card">
+        <div class="gauge" id="gaugePM"></div>
+        <h3>PM2.5</h3>
+        <p class="gauge-value"><span id="pmValue">0</span> <span class="unit">µg/m³</span></p>
       </div>
-
-      <!-- Product text -->
-      <div class="product-info rv d1">
-        <p class="product-tagline">One device.<br>Infinite clean air.</p>
-        <p class="product-desc">
-          Weighing just 800g — the size of a large water bottle — AIRO delivers
-          industrial-grade air purification without installation. Recharge from
-          sunlight when conditions allow, or plug into USB Type-C when you need
-          predictable power.
-        </p>
-        <ul class="feature-list">
-          <li>H13 True HEPA + activated carbon dual-layer filter</li>
-          <li>Integrated 12W monocrystalline silicon solar array</li>
-          <li>6,000 mAh LiFePO₄ battery — 48h on medium mode</li>
-          <li>Real-time PM2.5, VOC, CO₂ equiv., temp &amp; humidity display</li>
-          <li>USB-C 45W fast-charge fallback for cloudy conditions</li>
-          <li>Covers up to 25 m² in under 30 minutes</li>
-          <li>Whisper-quiet at 24 dB — safe for sleep &amp; focus work</li>
-          <li>IP54 rated · 80% recycled enclosure · 10-year build life</li>
-        </ul>
-        <p class="power-note" data-power-note></p>
+      <div class="gauge-card">
+        <div class="gauge" id="gaugeCO2"></div>
+        <h3>CO₂</h3>
+        <p class="gauge-value"><span id="co2Value">0</span> <span class="unit">ppm</span></p>
+      </div>
+      <div class="gauge-card">
+        <div class="quality-badge" id="qualityBadge">Excellent</div>
+        <h3>Air Quality</h3>
+        <p class="gauge-value" id="qualityText">Excellent</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ===========================================================
-       COMPONENTS SECTION
-       =========================================================== -->
-  <section id="components" aria-labelledby="components-heading">
-    <div class="components-header">
-      <h2 class="components-heading rv" id="components-heading">
-        Built from<br>the best<br>parts on earth.
-      </h2>
-      <p class="components-subtext rv">
-        Every component inside AIRO was chosen for performance,
-        longevity, and environmental responsibility. Nothing is
-        accidental.
-      </p>
+<!-- ========================= WHY OSAKA ========================= -->
+<section class="section" id="osaka">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">Case Study</span>
+      <h2 class="section-title">Why Osaka?</h2>
+      <p class="section-desc">Osaka is the perfect real-world testing ground for AIRO.</p>
     </div>
+    <div class="cards-grid" id="osakaGrid"></div>
+    <p class="references-note fade-up">📚 References will be added in future versions.</p>
+  </div>
+</section>
 
-    <div class="components-grid" data-components-list></div>
-  </section>
-
-  <!-- ===========================================================
-       CTA SECTION
-       =========================================================== -->
-  <section id="contact" aria-labelledby="contact-heading">
-    <div class="section-label cta-eyebrow rv">Early Access</div>
-    <h2 class="cta-heading rv" id="contact-heading">
-      Join the<br>
-      <span class="cta-hl">clean air</span><br>
-      movement.
-    </h2>
-    <p class="cta-sub rv">
-      Early access members receive priority shipping, a lifetime filter
-      discount, and direct influence over the next generation of AIRO products.
-    </p>
-    <div class="cta-buttons rv">
-      <a href="mailto:hello@airo.jp" class="btn-accent">Request Early Access</a>
-      <a href="#components" class="btn-ghost">Explore Technology</a>
+<!-- ========================= OBJECTIVES ========================= -->
+<section class="section section-alt" id="objectives">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">Research Objectives</span>
+      <h2 class="section-title">Our Goals</h2>
     </div>
-  </section>
+    <div class="cards-grid" id="objectivesGrid"></div>
+  </div>
+</section>
 
-  <!-- ===========================================================
-       FOOTER
-       =========================================================== -->
-  <footer role="contentinfo">
-    <div class="footer-logo" aria-label="AIRO">AIRO</div>
-    <p class="footer-copy">© 2025 AIRO Technologies K.K. · Osaka, Japan</p>
-    <ul class="footer-links">
-      <li><a href="#">Privacy</a></li>
-      <li><a href="#">Press</a></li>
-      <li><a href="#">Careers</a></li>
-      <li><a href="mailto:hello@airo.jp">Contact</a></li>
-    </ul>
-  </footer>
+<!-- ========================= FUTURE ========================= -->
+<section class="section" id="future">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">Future Improvements</span>
+      <h2 class="section-title">What's Next for AIRO</h2>
+    </div>
+    <div class="cards-grid" id="futureGrid"></div>
+  </div>
+</section>
 
-  <!-- JavaScript -->
-  <script src="content.config.js" defer></script>
-  <script src="script.js" defer></script>
+<!-- ========================= FOOTER ========================= -->
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <span class="logo-icon">◐</span>
+        <span class="logo-text">AIRO</span>
+      </div>
+      <p class="footer-motto">Clean Air, Anywhere.</p>
+    </div>
+    <div class="footer-nav">
+      <h4>Navigate</h4>
+      <ul id="footerLinks"></ul>
+    </div>
+    <div class="footer-info">
+      <h4>Project</h4>
+      <p><strong>Authors:</strong> <span class="placeholder">[Placeholder]</span></p>
+      <p><strong>Institution:</strong> <span class="placeholder">[Placeholder]</span></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© <span id="year"></span> AIRO Research Project. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>

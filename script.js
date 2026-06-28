@@ -29,7 +29,7 @@ const images = {
   // Documentation images
   doc1:     "assets/media/doc1.png",
   doc2:     "assets/media/doc2.png",
-  doc3:     "assets/media/doc3.JPG",
+  doc3:     "assets/media/doc4.JPG",
   // Engineering development images
   eng1: "assets/media/wokwi-prototype.jpg",
   eng2: "assets/media/early-case.jpeg",

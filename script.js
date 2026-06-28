@@ -166,7 +166,7 @@ const teamMembers = [
     role: "Lead Systems Engineer, Embedded Programmer, Product Designer & Web Designer",
     description: "Designed the product enclosure and hardware layout, assembled and wired the system, developed the embedded software, and created the project's website.",
     image: images.team3,
-    social: { github: "#", email: "#", linkedin: "#" }
+    social: { github: "https://github.com/red-1v", email: "ahmadhaziq649@gmail.com", linkedin: "#" }
   },
   {
     name: "Asadel Khairul Ijlal",

@@ -349,9 +349,22 @@ function renderParticles() {
   for (let i = 0; i < 15; i++) {
     const p = document.createElement("div");
     p.className = "particle";
+    
+    // 1. Randomize horizontal starting position
     p.style.left = Math.random() * 100 + "%";
-    p.style.animationDelay = Math.random() * 8 + "s";
-    p.style.animationDuration = (6 + Math.random() * 6) + "s";
+    
+    // 2. Randomize animation duration (between 6s and 12s) to prevent synchronization
+    const duration = 6 + Math.random() * 6;
+    
+    // 3. Apply a NEGATIVE animation delay.
+    // This starts the particle at a random point in its animation cycle,
+    // scattering them vertically across the screen immediately.
+    const delay = -(Math.random() * duration);
+    
+    // Apply the randomized timing via inline styles
+    p.style.animationDuration = `${duration}s`;
+    p.style.animationDelay = `${delay}s`;
+    
     container.appendChild(p);
   }
 }

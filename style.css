@@ -302,7 +302,7 @@ ul { list-style: none; }
   background: var(--secondary);
   border-radius: 50%;
   opacity: 0.6;
-  animation: rise 8s linear infinite;
+  animation: rise linear infinite;
 }
 
 @keyframes float {

@@ -180,7 +180,7 @@ const teamMembers = [
     role: "Document & Data Curator, Sample Preparation Specialist & Laboratory Technician",
     description: "Managed project documentation and research data, prepared experimental samples, and supported laboratory activities.",
     image: images.team5,
-    social: { github: "", email: "#", linkedin: "" }
+    social: { github: "", email: "mailto:bam.zaah.01@gmail.com", linkedin: "" }
   },
   {
     name: "Jejak Anugrah Cendikia",

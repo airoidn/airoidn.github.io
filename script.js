@@ -152,49 +152,49 @@ const teamMembers = [
     role: "Principal Investigator, Project Manager & Laboratory Technician",
     description: "Led the research, coordinated project execution, and supervised laboratory testing and documentation.",
     image: images.team1,
-    social: { github: "#", email: "#", linkedin: "#" }
+    social: { github: "", email: "mailto:salsabilafps@gmail.com", linkedin: "" }
   },
   {
     name: "Talitha Athallah Setiawan",
     role: "Logistics & Finance Coordinator, Laboratory Technician & Public Relations Officer",
     description: "Managed logistics, budgeting, laboratory support, and external communications throughout the project.",
     image: images.team2,
-    social: { github: "#", email: "#", linkedin: "#" }
+    social: { github: "", email: "mailto:talithaathallahsetiawan@gmail.com", linkedin: "" }
   },
   {
     name: "Ahmad Haziq",
     role: "Lead Systems Engineer, Embedded Programmer, Product Designer & Web Designer",
     description: "Designed the product enclosure and hardware layout, assembled and wired the system, developed the embedded software, and created the project's website.",
     image: images.team3,
-    social: { github: "https://github.com/red-1v", email: "ahmadhaziq649@gmail.com", linkedin: "#" }
+    social: { github: "https://github.com/red-1v", email: "mailto:ahmadhaziq649@gmail.com", linkedin: "" }
   },
   {
     name: "Asadel Khairul Ijlal",
     role: "Technical Resources Coordinator, Pre-Material Processing & Laboratory Technician",
     description: "Supported laboratory experiments and assisted with the preparation and management of technical resources.",
     image: images.team4,
-    social: { github: "#", email: "#", linkedin: "#" }
+    social: { github: "", email: "mailto:asadelkhairul@gmail.com", linkedin: "" }
   },
   {
     name: "Zaahir Maulana Mahruzar",
     role: "Document & Data Curator, Sample Preparation Specialist & Laboratory Technician",
     description: "Managed project documentation and research data, prepared experimental samples, and supported laboratory activities.",
     image: images.team5,
-    social: { github: "#", email: "#", linkedin: "#" }
+    social: { github: "", email: "#", linkedin: "" }
   },
   {
     name: "Jejak Anugrah Cendikia",
     role: "Raw Material Pre-processing Specialist, Technical Resources Coordinator & Laboratory Technician",
     description: "Prepared raw materials, coordinated technical resources, and assisted with laboratory testing and experimentation.",
     image: images.team6,
-    social: { github: "#", email: "#", linkedin: "#" }
+    social: { github: "", email: "mailto:jejakanugrah3@gmail.com", linkedin: "" }
   },
   {
     name: "Safana Rizki Tri Tunggal Dewi",
     role: "Secretary, Media Documentarian & Laboratory Technician",
     description: "Handled project administration, documented project activities through media, and supported laboratory operations.",
     image: images.team7,
-    social: { github: "#", email: "#", linkedin: "#" }
+    social: { github: "", email: "mailto:safanarizkii@gmail.com", linkedin: "" }
   }
 ];
 

@@ -19,24 +19,24 @@ const images = {
   fan:      "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400",
   logo:     "assets/media/icon.png",
   // Team member placeholder images
-  team1:    "assets/media/salsa.png",
-  team2:    "assets/media/talitha.png",
-  team3:    "assets/media/ahmad.png",
-  team4:    "assets/media/",
-  team5:    "assets/media/zaahir.png",
-  team6:    "assets/media/jejak.png",
-  team7:    "assets/media/safana.png",
+  team1:    "assets/media/salsa.JPG",
+  team2:    "assets/media/talitha.JPG",
+  team3:    "assets/media/ahmad.JPG",
+  team4:    "assets/media/adel.JPG",
+  team5:    "assets/media/zaahir.JPG",
+  team6:    "assets/media/jejak.JPG",
+  team7:    "assets/media/safana.JPG",
   // Documentation images
   doc1:     "assets/media/doc1.png",
   doc2:     "assets/media/doc2.png",
-  doc3:     "https://images.unsplash.com/photo-1581092335397-9583eb92d232?w=600",
+  doc3:     "assets/media/doc3.JPG",
   // Engineering development images
   eng1: "assets/media/wokwi-prototype.jpg",
   eng2: "assets/media/early-case.jpeg",
   eng3: "assets/media/late-case.jpeg",
   eng4: "assets/media/lab-research.jpeg",
   eng5: "assets/media/activated-case.png",
-  eng6: "https://images.unsplash.com/photo-1609939b190165b6a7a1b9a5d52b34a6?w=600"
+  eng6: "assets/media/complete-case.JPG"
 };
 
 /* ========================= NAVIGATION ========================= */
